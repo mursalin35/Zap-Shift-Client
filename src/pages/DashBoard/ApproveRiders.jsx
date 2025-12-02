@@ -5,6 +5,7 @@ import { FaUserCheck } from "react-icons/fa";
 import { IoPersonRemove } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import Swal from "sweetalert2";
+import { CiViewList } from "react-icons/ci";
 
 const ApproveRiders = () => {
   const axiosSecure = useAxiosSecure();
@@ -19,8 +20,10 @@ const ApproveRiders = () => {
 
   //   handle approve + reject center
   const updateRiderStatus = (rider, status) => {
+
     const updateInfo = { status: status, email: rider.email };
     axiosSecure.patch(`/riders/${rider._id}`, updateInfo).then((res) => {
+
       if (res.data.modifiedCount) {
         refetch();
         Swal.fire({
@@ -45,7 +48,7 @@ const ApproveRiders = () => {
   };
 
   return (
-    <div>
+    <div className=" p-6">
       <h2 className="text-5xl">Riders pending Approval: {riders.length} </h2>
 
       <div className="overflow-x-auto">
@@ -82,6 +85,9 @@ const ApproveRiders = () => {
                   </p>
                 </td>
                 <td className="flex gap-5">
+                  <button className="btn btn-square hover:bg-primary">
+                    <CiViewList />
+                  </button>
                   <button
                     onClick={() => handleApprove(rider)}
                     className="btn btn-square hover:bg-primary"

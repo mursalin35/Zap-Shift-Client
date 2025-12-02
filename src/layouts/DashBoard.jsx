@@ -1,4 +1,5 @@
 import React from "react";
+import { FaUsers } from "react-icons/fa";
 import { MdCreditScore, MdDeliveryDining, MdHistory } from "react-icons/md";
 import { RiEBike2Fill } from "react-icons/ri";
 import { Link, NavLink, Outlet } from "react-router";
@@ -104,6 +105,18 @@ const DashBoard = () => {
                 {/* icon */}
                <RiEBike2Fill />
               <span className="is-drawer-close:hidden">Approve Rider</span>
+              </NavLink>
+            </li>
+            {/* User management links */}
+            <li>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="User management"
+                to="/dashboard/users-management"
+              >
+                {/* icon */}
+               <FaUsers />
+              <span className="is-drawer-close:hidden">User management</span>
               </NavLink>
             </li>
             {/* List item */}
