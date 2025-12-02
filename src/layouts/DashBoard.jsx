@@ -1,5 +1,6 @@
 import React from "react";
 import { MdCreditScore, MdDeliveryDining, MdHistory } from "react-icons/md";
+import { RiEBike2Fill } from "react-icons/ri";
 import { Link, NavLink, Outlet } from "react-router";
 
 const DashBoard = () => {
@@ -91,6 +92,18 @@ const DashBoard = () => {
                 {/* icon */}
                <MdCreditScore />
               <span className="is-drawer-close:hidden">Payment History</span>
+              </NavLink>
+            </li>
+            {/* Approve Rider links */}
+            <li>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Approve Riders"
+                to="/dashboard/approve-riders"
+              >
+                {/* icon */}
+               <RiEBike2Fill />
+              <span className="is-drawer-close:hidden">Approve Rider</span>
               </NavLink>
             </li>
             {/* List item */}
