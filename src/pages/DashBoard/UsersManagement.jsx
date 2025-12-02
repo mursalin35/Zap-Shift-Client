@@ -1,17 +1,64 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { FaUserShield } from "react-icons/fa";
+import { FiShieldOff } from "react-icons/fi";
+import Swal from "sweetalert2";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: users = [] } = useQuery({
+  const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
+
+  // backend user replace > admin api hit
+  const handleMakeUser = (user) => {
+    const roleInfo = { role: "admin" };
+    axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+      if (res.data.modifiedCount) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user.displayName} marked as Admin`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
+  };
+
+  // admin remove
+  const handleRemoveUsr = (user) => {
+    const roleInfo = { role: "user" };
+    axiosSecure.patch(`users/${user._id}`, roleInfo).then((res) => {
+      if (res.data.modifiedCount) {
+        refetch();
+        Swal.fire({
+          title: "Are you sure?",
+          text: `${user.displayName} Removed from Admin`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Remove it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Admin has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
 
   return (
     <div className="p-6">
@@ -24,8 +71,8 @@ const UsersManagement = () => {
               <th>Si.No</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Favorite Color</th>
-              <th></th>
+              <th>Admin Actions</th>
+              <th>Others Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -49,17 +96,32 @@ const UsersManagement = () => {
                     </div>
                   </div>
                 </td>
-                <td>
-                 {user.email}
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td className="flex gap-4">
+                  {user.role === "admin" ? (
+                    <button
+                      onClick={() => handleRemoveUsr(user)}
+                      className="btn bg-primary"
+                    >
+                      <FiShieldOff />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleMakeUser(user)}
+                      className="btn "
+                    >
+                      <FaUserShield />
+                    </button>
+                  )}
                 </td>
                 <td>Admin</td>
-                <th>
+                <td>
                   <button className="btn btn-ghost btn-xs">Actions</button>
-                </th>
+                </td>
               </tr>
             ))}
           </tbody>
-         
         </table>
       </div>
     </div>
