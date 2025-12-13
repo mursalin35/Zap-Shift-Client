@@ -3,8 +3,11 @@ import { FaUsers } from "react-icons/fa";
 import { MdCreditScore, MdDeliveryDining, MdHistory } from "react-icons/md";
 import { RiEBike2Fill } from "react-icons/ri";
 import { Link, NavLink, Outlet } from "react-router";
+import useRole from "../hooks/useRole";
 
 const DashBoard = () => {
+  const { role } = useRole();
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -80,7 +83,7 @@ const DashBoard = () => {
               >
                 {/* icon */}
                 <MdDeliveryDining />
-              <span className="is-drawer-close:hidden">My Parcels</span>
+                <span className="is-drawer-close:hidden">My Parcels</span>
               </NavLink>
             </li>
             {/* Payment history links */}
@@ -91,34 +94,42 @@ const DashBoard = () => {
                 to="/dashboard/payment-history"
               >
                 {/* icon */}
-               <MdCreditScore />
-              <span className="is-drawer-close:hidden">Payment History</span>
+                <MdCreditScore />
+                <span className="is-drawer-close:hidden">Payment History</span>
               </NavLink>
             </li>
-            {/* Approve Rider links */}
-            <li>
-              <NavLink
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Approve Riders"
-                to="/dashboard/approve-riders"
-              >
-                {/* icon */}
-               <RiEBike2Fill />
-              <span className="is-drawer-close:hidden">Approve Rider</span>
-              </NavLink>
-            </li>
-            {/* User management links */}
-            <li>
-              <NavLink
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="User management"
-                to="/dashboard/users-management"
-              >
-                {/* icon */}
-               <FaUsers />
-              <span className="is-drawer-close:hidden">User management</span>
-              </NavLink>
-            </li>
+            {role === "admin" && (
+              <>
+                {/* Approve Rider links */}
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Approve Riders"
+                    to="/dashboard/approve-riders"
+                  >
+                    {/* icon */}
+                    <RiEBike2Fill />
+                    <span className="is-drawer-close:hidden">
+                      Approve Rider
+                    </span>
+                  </NavLink>
+                </li>
+                {/* User management links */}
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="User management"
+                    to="/dashboard/users-management"
+                  >
+                    {/* icon */}
+                    <FaUsers />
+                    <span className="is-drawer-close:hidden">
+                      User management
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
             {/* List item */}
             <li>
               <button

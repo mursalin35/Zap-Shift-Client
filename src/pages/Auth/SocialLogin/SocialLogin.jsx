@@ -2,7 +2,7 @@ import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-
+import { toast } from "react-hot-toast";
 const SocialLogin = () => {
   const { signInGoogle } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -13,7 +13,6 @@ const SocialLogin = () => {
     signInGoogle()
       .then((result) => {
         console.log(result);
-
         // create user in the database
         const userInfo = {
           email: result.user.email,
@@ -23,6 +22,8 @@ const SocialLogin = () => {
         axiosSecure.post("/users", userInfo).then((res) => {
           console.log("user data has been storage", res.data);
           navigate(location.state || "/");
+        toast.success("Signed in with Google!");
+
         });
       })
       .catch((error) => {
@@ -50,6 +51,7 @@ const SocialLogin = () => {
         />
         <span>SignIn with Google</span>
       </button>
+      
     </div>
   );
 };

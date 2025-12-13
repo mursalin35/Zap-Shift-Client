@@ -17,9 +17,9 @@ const UsersManagement = () => {
   });
 
   // backend user replace > admin api hit
-  const handleMakeUser = (user) => {
+  const handleMakeAdmin = (user) => {
     const roleInfo = { role: "admin" };
-    axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+    axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
         Swal.fire({
@@ -36,7 +36,7 @@ const UsersManagement = () => {
   // admin remove
   const handleRemoveUsr = (user) => {
     const roleInfo = { role: "user" };
-    axiosSecure.patch(`users/${user._id}`, roleInfo).then((res) => {
+    axiosSecure.patch(`users/${user._id}/role`, roleInfo).then((res) => {
       if (res.data.modifiedCount) {
         refetch();
         Swal.fire({
@@ -108,7 +108,7 @@ const UsersManagement = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleMakeUser(user)}
+                      onClick={() => handleMakeAdmin(user)}
                       className="btn "
                     >
                       <FaUserShield />
